@@ -3,36 +3,32 @@ using namespace std;
 class NodeObject
 {
 public:
-	string getWord();
-	int* getIntWord();
-	NodeObject(int* wordToStore);
+	vector<int> getWord();
+	vector<int> getIntWord();
+	NodeObject(vector<int> wordToStore);
 	NodeObject() = default;
-	void setWord(int* wordToStore);
+	void setWord(vector<int> wordToStore);
 
 private:
-	int* word;
+	vector<int> word;
 	long len;
 
 };
 
-string NodeObject::getWord() {
-	string toReturn;
-	for (int i = 0; i < this->len; i++) {
-		toReturn += word[i];
-	}
-	return toReturn;
-}
-
-int* NodeObject::getIntWord() {
+vector<int> NodeObject::getWord() {
 	return word;
 }
 
-NodeObject::NodeObject(int* wordToStore) {
-	this->word = wordToStore;
-	this->len = sizeof(*wordToStore);
+vector<int> NodeObject::getIntWord() {
+	return word;
 }
 
-void NodeObject::setWord(int* wordToStore) {
+NodeObject::NodeObject(vector<int> wordToStore) {
 	this->word = wordToStore;
-	this->len = sizeof(*wordToStore);
+	this->len = wordToStore.size();
+}
+
+void NodeObject::setWord(vector<int> wordToStore) {
+	this->word = wordToStore;
+	this->len = wordToStore.size();
 }

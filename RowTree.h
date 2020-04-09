@@ -13,7 +13,7 @@ public:
 	RowTree(int);
 	RowTree(RowTree*);
   RowTree* genNextRow(RowTree*);
-	string* getPermutations();
+	vector<vector<int>> getPermutations();
 	long getLen();
   void setLen(long toSet);
   void setLevel(int toSet);
@@ -38,7 +38,7 @@ int RowTree::getLevel(){
   return this->level;
 }
 
-void RowTree::setLen(int toSet){
+void RowTree::setLen(long toSet){
   this->len = toSet;
 }
 
@@ -53,58 +53,58 @@ void RowTree::setLevel(int toSet){
 RowTree::RowTree(int startingLetter) {
 	this->level = 2;
 	this->len = NUMVALUES;
-	RowList = new NodeObject[NUMVALUES];
+	this->RowList = new NodeObject[NUMVALUES];
 	for (int i = 0; i < (NUMVALUES); i++)
 	{
 		NodeObject* temp = new NodeObject;
-		int* temp2 = new int[2];
-		temp2[0] = startingLetter;
-		temp2[1] = i + startPoint;
+		vector<int> temp2;
+		temp2.push_back(startingLetter);
+		temp2.push_back(i + startPoint);
 		temp->setWord(temp2);
 		RowList[i] = *temp;
 	}
 }
 
 RowTree::RowTree(RowTree* prevRow) {
-	// length of previous * num of possible values
-	this->len = prevRow->getLen() * NUMVALUES;
-	this->level = prevRow->level + 1;
-	this->RowList = new NodeObject[this->len];
+  RowTree newRowTree;
+  
+	int newLen = prevRow->getLen() * NUMVALUES;
+  newRowTree.setLen(newLen);
+	newRowTree.setLevel(prevRow->getLevel() + 1);
 
-	for (int i = 0; i < prevRow->len; i++) {
+	NodeObject* newRowList = new NodeObject[newLen];
+	for (int i = 0; i < prevRow->getLevel(); i++) {
 		for (int j = 0; j < NUMVALUES; j++) {
 
 			NodeObject* temp = new NodeObject;
-			int* temp2 = new int[level];
-			int* temp3 = prevRow->RowList[i].getIntWord();
-			for (int k = 0; k < level - 1; k++)
+			vector<int> temp2;
+			vector<int> temp3;
+      temp3 = prevRow->getRowListPointer()[i].getIntWord();
+			for (int k = 0; k < newRowTree.getLevel() - 1; k++)
 			{
-				temp2[k] = temp3[k];
+				temp2.push_back(temp3[k]);
 			}
-			temp2[level - 1] = startPoint + j;
+			temp2[newRowTree.getLevel() - 1] = startPoint + j;
 			temp->setWord(temp2);
 
-			this->RowList[(i * NUMVALUES) + j] = *temp;
+			newRowList[(i * NUMVALUES) + j] = *temp;
 		}
 	}
-
-	//needs to reset something
-
+  
+  newRowTree.setRowListPointer(newRowList);
 }
 
-string* RowTree::getPermutations()
+vector<vector<int>> RowTree::getPermutations()
 {
-	string* Permutations = new string[this->len];
+	vector<vector<int>> Permutations;
 	for (int i = 0; i < this->len; i++)
 	{
-		Permutations[i] = RowList[i].getWord();
+		Permutations.push_back(RowList[i].getWord());
 	}
 	return Permutations;
 }
 
-int RowTree::getLen()
+long RowTree::getLen()
 {
 	return this->len;
 }
-
-

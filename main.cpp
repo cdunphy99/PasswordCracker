@@ -1,5 +1,5 @@
 #include <iostream>
-#include
+#include <vector>
 #include "RowTree.h"
 
 using namespace std;
@@ -20,11 +20,12 @@ RowTree* genNextRow(RowTree* prevRow) {
 		for (int j = 0; j < NUMVALUES; j++) {
 
 			NodeObject* temp = new NodeObject;
-			int* temp2 = new int[newRowTree.getLevel()];
-			int* temp3 = prevRow->getRowListPointer()[i].getIntWord();
+			vector<int> temp2;
+			vector<int> temp3;
+      temp3 = prevRow->getRowListPointer()[i].getIntWord();
 			for (int k = 0; k < newRowTree.getLevel() - 1; k++)
 			{
-				temp2[k] = temp3[k];
+				temp2.push_back(temp3[k]);
 			}
 			temp2[newRowTree.getLevel() - 1] = startPoint + j;
 			temp->setWord(temp2);
@@ -73,10 +74,11 @@ int main()
 
 
 
-		string* permutations = currRow.getPermutations();
-		for (int i = 0; i < currRow.getLen(); i++)
+		vector<vector<int>> permutations = currRow.getPermutations();
+		for (auto i : permutations)
 		{
-			cout << permutations[i];
+      for(auto j : i)
+			cout << j;
 		}
 
 
